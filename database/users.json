@@ -1,0 +1,36 @@
+[
+    {
+        "userId": 1,
+        "username": "admin",
+        "password": "$2b$10$5VrxCwavMxVV8dKlOrC9mOeq1.ZlIvEn6lg7NSsstEIUMWWIMrQO2",
+        "userInformation": {
+            "name": {
+                "firstName": "BMI",
+                "lastName": "Admin"
+            },
+            "dob": "2000-09-10",
+            "height": "175",
+            "weight": "60"
+        },
+        "status": "normal",
+        "advice": [
+            "Add new advice in this array"
+        ]
+    },
+    {
+        "userId": 2,
+        "username": "rafli",
+        "password": "$2b$10$kD5n/YnNYKFvq4RsK8N6HOlt5I6o9EkuJoLJXVWgzlV.uuZY0156a",
+        "userInformation": {
+            "name": {
+                "firstName": "Rafli",
+                "lastName": "Jaskandi"
+            },
+            "dob": "2000-09-10",
+            "height": "175",
+            "weight": "60"
+        },
+        "status": "Not Checked",
+        "advice": []
+    }
+]
