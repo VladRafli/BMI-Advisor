@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    @import "./pages/login.css";
+    @import "./pages/register.css";
+    @import "./pages/dashboard/style.css";
+    @import "./pages/dashboard/tracking.css";
+}

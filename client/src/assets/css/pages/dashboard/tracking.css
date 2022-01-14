@@ -1,0 +1,33 @@
+.tracking_component {
+    @apply p-5;
+}
+
+.tracking_component > h1 {
+    @apply mb-10 text-center text-3xl font-bold;
+}
+
+.tracking_content {
+    @apply w-full grid grid-rows-1;
+    grid-template-columns: 1fr 3fr;
+}
+
+.tracking_history {
+    @apply mx-5 p-3 bg-gray-100 border shadow-lg;
+}
+
+.tracking_history > h1 {
+    @apply mb-10 text-center text-2xl font-semibold;
+}
+
+.history > div {
+    @apply grid text-lg;
+    grid-template-columns: 10rem 1fr 1fr;
+}
+
+.history > div > :nth-child(2) {
+    @apply text-center;
+}
+
+.history > div > :last-child {
+    @apply text-right;
+}

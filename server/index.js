@@ -7,8 +7,62 @@ const User = require('./model/User')
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
 
+// ==========
+// Constants
+// ==========
+
 const PORT = 5000 || process.env.PORT
 const app = express()
+
+
+// ================
+// Custom Middlewares
+// ================
+
+/**
+ * Check if Client is Logged in
+ * @param {Request} req 
+ * @param {Response} res 
+ * @param {NextFunction} next 
+ */
+ function isLoggedIn(req, res, next) {
+    if (req.session.userId === undefined) {
+        res.status(403).send('<h1>Forbidden</h1>')
+    } else {
+        next()
+    }
+}
+
+/**
+ * Check if Request Method is Allowed
+ * 
+ * Reference: https://cheatcode.co/tutorials/how-to-implement-secure-httponly-cookies-in-node-js-with-express
+ * @param {Request} req 
+ * @param {Response} res 
+ * @param {NextFunction} next 
+ */
+function isAllowedRequestMethods(req, res, next) {
+    const allowedMethods = [
+        "OPTIONS",
+        "HEAD",
+        "CONNECT",
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+    ];
+
+    if (!allowedMethods.includes(req.method)) {
+        res.status(405).send(`${req.method} not allowed.`)
+    }
+
+    next()
+}
+
+// =============
+// Use Middlewares
+// =============
 
 app.use(express.json())
 app.use(express.urlencoded({
@@ -19,79 +73,96 @@ app.use(morgan('dev'))
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
 app.use(cookieParser())
+app.use(isAllowedRequestMethods)
 
+// ================
+// API Routes
+// ================
 app.get('/', (req, res) => {
     if (req.session.userId === 1)
         res.send('This is BMI Advisor API Endpoint, API is under development, currently logged in as Admin! Proceed with caution.')
-    else
+    else if (req.session.userId !== undefined)
         res.send(`This is BMI Advisor API Endpoint, API is under development, currently logged in as ${req.session.username}`)
+    else
+        res.send(`This is BMI Advisor API Endpoint, API is under development, currently not logged in`)
 });
 
-app.get('/users', (req, res) => {
+app.get('/users', isLoggedIn, (req, res) => {
     // If Admin
     if (req.session.userId === 1) {
         if (req.query.id == null) {
             try {
-                res.send(User.getUser())
+                res.status(200).send(User.getUser())
+                return
             } catch (err) {
                 console.error(err)
                 res.status(500).send({
                     err: err
                 })
+                return
             }
         } else if (req.query.id != null && Number.isInteger(parseInt(req.query.id))) {
             try {
-                User.getUser().forEach(user => {
+                for (let user of User.getUser()) {
                     if (user.userId === parseInt(req.query.id)) {
-                        res.send({
+                        res.status(200).send({
                             userId: user.userId,
-                            userInformation: user.userInformation
+                            userInformation: user.userInformation,
+                            status: user.status,
+                            advice: user.advice
                         })
-                        return;
+                        return
                     }
-                    res.send({
+                    res.status(200).send({
                         msg: 'Data not found'
                     })
-                })
+                    return
+                }
             } catch (err) {
                 console.error(err)
                 res.status(500).send({
                     err: err
                 })
+                return
             }
-
         } else {
-            res.status(500).send('Request is invalid')
+            res.status(500).send({
+                msg: 'Request is invalid'
+            })
+            return
         }
     }
     // If not Admin
-    else {
+    else if (req.session.userId !== undefined) {
         try {
-            User.getUser().forEach(user => {
-                if (user.userId === req.session.userId) {
-                    res.send({
+            for (let user of User.getUser()) {
+                if (user.userId === parseInt(req.query.id)) {
+                    res.status(200).send({
                         userId: user.userId,
                         userInformation: user.userInformation,
                         status: user.status,
                         advice: user.advice
                     })
-                    return;
+                    return
+                } else {
+                    res.status(500).send({
+                        msg: 'Data not found for userId=' + parseInt(req.query.id)
+                    })
+                    return
                 }
-                res.send({
-                    msg: 'Data not found'
-                })
-            })
+            }
         } catch (err) {
             console.error(err)
             res.status(500).send({
                 err: err
             })
+            return
         }
     }
 })
@@ -99,18 +170,24 @@ app.get('/users', (req, res) => {
 app.post('/users/login', (req, res) => {
     const { username, password } = req.body
     try {
-        if (!req.session.userId) {
-            User.getUser().forEach(user => {
+        if (req.session.userId === undefined) {
+            for (let user of User.getUser()) {
                 if (user.username === username && bcrypt.compareSync(password, user.password)) {
                     req.session.userId = user.userId
                     req.session.username = user.username
-                    res.status(200).send('User logged in!')
+                    res.status(200).send({
+                        msg: 'User successfully logged in!'
+                    })
                     return
                 }
-                res.status(403).send('Wrong username or password!')
-            })
+                res.status(500).send({
+                    msg: 'Wrong username or password!'
+                })
+                return
+            }
         } else {
             res.status(200).send()
+            return
         }
     } catch (err) {
         console.error(err)
@@ -131,7 +208,9 @@ app.post('/users/register', (req, res) => {
         newUser.status = 'Not Checked'
         newUser.advice = []
         User.addUser(newUser)
-        res.status(201).send('New users created!')
+        res.status(201).send({
+            msg: 'New users created!'
+        })
     } catch (err) {
         console.error(err)
         res.status(500).send({
@@ -140,21 +219,43 @@ app.post('/users/register', (req, res) => {
     }
 })
 
-app.get('/users/logout', (req, res) => {
-    if (req.session.userId) {
-        req.session.destroy()
-        res.status(200).send('User logged out!')
+app.get('/users/isloggedin', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
+    res.setHeader('Pragma', 'no-cache')
+    console.log(req.session.userId)
+    if (req.session.userId === undefined) {
+        res.status(200).send(false)
+    } else if (typeof req.session.userId === 'number') {
+        res.status(200).send(true)
     } else {
-        res.status(400).send('No user need to be logged out!')
+        res.status(500).send({
+            msg: "Something wrong with the session"
+        })
     }
 })
 
-app.get('/users/profile', (req, res) => {
+app.get('/users/logout', (req, res) => {
+    if (req.session.userId !== undefined) {
+        req.session.destroy()
+        res.clearCookie('userId')
+        res.status(200).send({
+            msg: 'User logged out!'
+        })
+    } else {
+        res.status(400).send({
+            msg: 'No user need to be logged out!'
+        })
+    }
+})
+
+app.get('/users/profile', isLoggedIn, (req, res) => {
     try {
         if (req.query.id != null) {
             res.status(200).send(User.getUserById(req.query.id))
         } else {
-            res.status(400).send('Need url param of "id"')
+            res.status(400).send({
+                msg: 'Need url param of \"id\"'
+            })
         }
     } catch (err) {
         console.error(err)
@@ -164,13 +265,13 @@ app.get('/users/profile', (req, res) => {
     }
 })
 
-app.post('/users/profile', (req, res) => {
+app.post('/users/profile', isLoggedIn, (req, res) => {
     const {
-        username, 
-        password, 
-        firstName, 
-        lastName, 
-        dob, 
+        username,
+        password,
+        firstName,
+        lastName,
+        dob,
         height,
         weight
     } = req.body
@@ -185,9 +286,13 @@ app.post('/users/profile', (req, res) => {
             user.height = height
             user.weight = weight
             User.setUser(req.query.id, user)
-            res.status(200).send('User profile successfully changed')
+            res.status(200).send({
+                msg: 'User profile successfully changed'
+            })
         } else {
-            res.status(400).send('Need url param of "id"')
+            res.status(400).send({
+                msg: 'Need url param of \"id\"'
+            })
         }
     } catch (err) {
         console.error(err)
@@ -197,14 +302,18 @@ app.post('/users/profile', (req, res) => {
     }
 })
 
-app.post('/users/advice', (req, res) => {
+app.post('/users/advice', isLoggedIn, (req, res) => {
     const { advice } = req.body
     try {
         if (req.query.id != null) {
             User.addUserAdvice(req.query.id, advice)
-            res.status(200).send('Advice successfully added')
+            res.status(200).send({
+                msg: 'Advice successfully added'
+            })
         } else {
-            res.status(400).send('Need url param of "id"')
+            res.status(400).send({
+                msg: 'Need url param of \"id\"'
+            })
         }
     } catch (err) {
         console.error(err)
@@ -214,14 +323,18 @@ app.post('/users/advice', (req, res) => {
     }
 })
 
-app.put('/users/advice', (req, res) => {
+app.put('/users/advice', isLoggedIn, (req, res) => {
     const { advice } = req.body
     try {
         if (req.query.id != null) {
             User.setUserAdvice(req.query.id, advice)
-            res.status(200).send('Advice successfully changed')
+            res.status(200).send({
+                msg: 'Advice successfully changed'
+            })
         } else {
-            res.status(400).send('Need url param of "id"')
+            res.status(400).send({
+                msg: 'Need url param of \"id\"'
+            })
         }
     } catch (err) {
         console.error(err)
@@ -231,14 +344,18 @@ app.put('/users/advice', (req, res) => {
     }
 })
 
-app.put('/users/bmi', (req, res) => {
+app.put('/users/bmi', isLoggedIn, (req, res) => {
     const { bmi } = req.body
     try {
         if (req.query.id != null) {
             User.setUserBMIStatus(req.query.id, bmi)
-            res.status(200).send('Advice successfully changed')
+            res.status(200).send({
+                msg: 'Advice successfully changed'
+            })
         } else {
-            res.status(400).send('Need url param of "id"')
+            res.status(400).send({
+                msg: 'Need url param of \"id\"'
+            })
         }
     } catch (err) {
         console.error(err)

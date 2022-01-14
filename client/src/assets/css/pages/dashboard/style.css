@@ -1,0 +1,154 @@
+.dashboard_content {
+    @apply p-10 bg-slate-50 overflow-y-scroll;
+    height: calc(100vh - 10rem);
+}
+
+.dashboard_content > h1 {
+    @apply mb-3 text-2xl text-center;
+}
+
+.dashboard_content > p {
+    @apply mb-10 text-center;
+}
+
+/* Navbar */
+
+.dashboard_navbar {
+    @apply h-20 p-5 grid grid-rows-1 grid-cols-3 bg-cyan-300;
+}
+
+.dashboard_navbar > a {
+    @apply w-fit transition-colors hover:text-slate-500;
+}
+
+.dashboard_navbar > a > h1 {
+    @apply text-2xl;
+}
+
+.dashboard_navbar > .navbar_links {
+    @apply flex justify-between items-center;
+}
+
+.dashboard_navbar > .navbar_links > a {
+    @apply transition-colors hover:text-slate-500;
+}
+
+.dashboard_navbar > .profile_button {
+    @apply flex justify-end items-center;
+}
+
+.dashboard_navbar > .profile_button > .user_profile {
+    @apply flex items-center;
+}
+
+.dashboard_navbar > .profile_button > .user_profile > .user_profile_dropdown {
+    @apply w-32 p-5 hidden flex-col bg-gray-100 shadow-lg rounded-xl;
+    transform: translateY(70%);
+}
+
+.dashboard_navbar > .profile_button > .user_profile > .user_profile_dropdown.show {
+    @apply flex absolute;
+}
+
+.dashboard_navbar > .profile_button > .user_profile > .user_profile_dropdown > * {
+    @apply p-2 rounded-xl transition-colors hover:bg-gray-300;
+}
+
+.dashboard_navbar > .profile_button > .user_profile > .user_avatar {
+    @apply h-10 w-10 mr-5 p-2 flex justify-center items-center rounded-full bg-white transition-colors cursor-pointer hover:bg-opacity-50;
+}
+
+.user_statistics {
+    @apply mb-10 flex justify-center;
+}
+
+.user_statistics > .statistic {
+    @apply h-32 w-60 mx-10 p-5 flex flex-col items-center shadow-lg;
+}
+
+.user_statistics > #height {
+    @apply bg-gradient-to-br from-orange-300 to-orange-500;
+}
+
+.user_statistics > #weight {
+    @apply bg-gradient-to-b from-lime-300 to-green-500;
+}
+
+.user_statistics > #bmindex {
+    @apply bg-gradient-to-bl from-fuchsia-300 to-pink-500;
+}
+
+.user_statistics > .statistic > h1 {
+    @apply mb-2 text-3xl;
+}
+
+.user_statistics > .statistic > div {
+    @apply w-full flex justify-center items-center;
+}
+
+.user_statistics > .statistic > div > * {
+    @apply mx-3;
+}
+
+.user_statistics > .statistic > div  > :first-child > p {
+    @apply text-2xl font-bold;
+}
+
+.user_statistics > .statistic > div  > :last-child {
+    @apply flex flex-col items-center;
+}
+
+.user_statistics > .statistic > div  > :last-child > svg {
+    @apply text-2xl;
+}
+
+.user_statistics > .statistic > div  > :last-child > svg.fa-caret-up {
+    @apply text-green-500;
+}
+
+.user_statistics > .statistic > div  > :last-child > svg.fa-caret-down {
+    @apply text-red-500;
+}
+
+.user_statistics > .statistic > div  > :last-child > p {
+    @apply font-semibold;
+}
+
+.user_statistics > .statistic > div  > :last-child > p > span {
+    @apply text-xl;
+}
+
+/* Advisor and Graph */
+
+.advisor_graph_separator {
+    @apply grid grid-rows-1 grid-cols-2 gap-5;
+}
+
+.advisor_graph_separator > * {
+    @apply p-5;
+}
+
+.advisor_graph_separator > .advisor {
+    @apply flex flex-col items-center border shadow-lg;
+}
+
+.advisor_graph_separator > .advisor > h1 {
+    @apply w-fit mb-5 px-3 text-2xl border-b-2;
+}
+
+.advisor_graph_separator > .advisor > .advice_list {
+    @apply w-full;
+}
+
+.advisor_graph_separator > .advisor > .advice_list > div > input {
+    @apply mr-3;
+}
+
+/* Footer */
+.dashboard_footer {
+    @apply h-20 p-5 flex justify-center items-center text-lg font-semibold bg-cyan-300;
+}
+
+.dashboard_footer > p > a {
+    @apply transition-colors text-blue-600 hover:text-blue-400;
+}
