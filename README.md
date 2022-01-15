@@ -34,6 +34,7 @@ Tools: HTML5, Javascript, React.js
 - @fortawesome/free-regular-svg-icons
 - @fortawesome/free-solid-svg-icons
 - @fortawesome/react-fontawesome
+- gh-pages
 - Express
 - bcrypt
 - cors
