@@ -1,0 +1,55 @@
+.calculator_component > h1 {
+    @apply mb-10 text-3xl text-center font-bold;
+}
+
+.calculator_component > .calculator_content {
+    @apply grid gap-5;
+    grid-template-columns: 1fr 3fr;
+}
+
+.calculator_component > .calculator_content > .bmi_reference > table {
+    @apply w-full shadow-lg;
+}
+
+.calculator_component > .calculator_content > .bmi_reference th, 
+.calculator_component > .calculator_content > .bmi_reference tr, 
+.calculator_component > .calculator_content > .bmi_reference td {
+    @apply border;
+}
+
+.calculator_component > .calculator_content > .bmi_reference th, 
+.calculator_component > .calculator_content > .bmi_reference td {
+    @apply px-5 py-3;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > div {
+    @apply mb-5 flex flex-col items-center;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > form {
+    @apply flex flex-col items-center;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > form > * {
+    @apply mb-5;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > form > div {
+    @apply flex flex-col items-center;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > form > div > label {
+    @apply mb-3;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > form > div > input {
+    @apply p-3 border shadow-lg;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > form  > button {
+    @apply p-3 bg-gray-300 rounded-lg transition-colors hover:bg-opacity-50;
+}
+
+.calculator_component > .calculator_content > .bmi_calculator > .bmi_result {
+    @apply hidden flex-col items-center;
+}

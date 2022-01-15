@@ -7,4 +7,6 @@
     @import "./pages/register.css";
     @import "./pages/dashboard/style.css";
     @import "./pages/dashboard/tracking.css";
+    @import "./pages/dashboard/calculator.css";
+    @import "./pages/dashboard/profile.css";
 }

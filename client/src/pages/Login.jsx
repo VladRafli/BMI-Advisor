@@ -5,7 +5,7 @@ import axios from "axios"
 export default function Login() {
   let navigate = useNavigate();
   let [state, setState] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
@@ -29,6 +29,9 @@ export default function Login() {
     //   .catch((res) => {
     //     console.log(res)
     //   })
+    console.log(state);
+    alert("This form is not doing anything, system is not available");
+    navigate("/dashboard");
   }
   return (
     <div className="login_page">
@@ -38,11 +41,11 @@ export default function Login() {
           <p>Login</p>
           <div className="form_inputs">
             <input
-              value={state.username}
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Username"
+              value={state.email}
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
               onChange={handleChange}
             />
             <input

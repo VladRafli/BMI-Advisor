@@ -32,6 +32,19 @@ export default function RegisterFormOne() {
           placeholder="Last Name"
           onChange={handleChange}
         />
+        <select name="gender" id="gender" value={getFormState.gender} onChange={handleChange}>
+          <option value="" disabled selected>Choose gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+        <input
+          value={getFormState.age}
+          type="number"
+          name="age"
+          id="age"
+          placeholder="Age"
+          onChange={handleChange}
+        />
         <input
           value={getFormState.dob}
           type="date"

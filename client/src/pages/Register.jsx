@@ -7,11 +7,13 @@ import BackButton from "../components/Register/Back_Button";
 export const formState = atom({
     key: 'formState',
     default: {
-        username: "",
+        email: "",
         password: "",
         password_check: "",
         firstName: "",
         lastName: "",
+        gender: "",
+        age: "",
         dob: "",
         height: "",
         weight: ""

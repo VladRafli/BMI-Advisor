@@ -29,7 +29,6 @@ Tools: HTML5, Javascript, React.js
 - Autoprefixer
 - Chart.js
 - react-chartjs-2
-- js-cookie
 - @fortawesome/fontawesome-svg-core
 - @fortawesome/free-brands-svg-icons
 - @fortawesome/free-regular-svg-icons
@@ -42,6 +41,15 @@ Tools: HTML5, Javascript, React.js
 - morgan
 - express-session
 - cookie-parser
+
+# Project Team
+
+- 2301943402 - RAFLI ATHALA JASKANDI (🤯💻🕚)
+- 2301846383 - NABILLA DRIESANDIA AZARINE
+- 2301860021 - TEOFILUS NATANAEL SUSANTO
+- 2301870804 - TIMOTHY NATAN
+- 2301888101 - AMELIA HILLARY ENGGIE
+- 2301913690 - WILLIAM DEOVALDO
 
 # License
 

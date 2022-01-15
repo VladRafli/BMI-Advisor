@@ -5,6 +5,7 @@ import { formState } from "../../pages/Register";
 export default function RegisterFormTwo() {
   const getFormState = useRecoilValue(formState);
   const setFormState = useSetRecoilState(formState);
+  const navigate = useNavigate();
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,16 +17,18 @@ export default function RegisterFormTwo() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(getFormState);
+    alert("This form is not doing anything, system is not available");
+    navigate("/login");
   };
   return (
     <>
       <div className="form_inputs">
         <input
-          value={getFormState.username}
-          type="text"
-          name="username"
-          id="username"
-          placeholder="Username"
+          value={getFormState.email}
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Email"
           onChange={handleChange}
         />
         <input

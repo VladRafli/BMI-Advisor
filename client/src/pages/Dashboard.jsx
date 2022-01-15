@@ -2,7 +2,24 @@ import { Routes, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import Main from "../components/Dashboard/Main";
+import Calculator from "../components/Dashboard/Calculator";
 import Tracking from "../components/Dashboard/Tracking";
+import Profile from "../components/Dashboard/Profile";
+import { atom } from "recoil";
+
+export const userState = atom({
+  key: "userState",
+  default: {
+    email: "user@mail.com",
+    name: {
+      firstName: "user",
+      lastName: "testing"
+    },
+    dob: "1999-12-30",
+    height: 0,
+    weight: 0
+  }
+})
 
 export default function Dashboard() {
   const handleProfileClick = (e) => {
@@ -13,6 +30,9 @@ export default function Dashboard() {
       document.querySelector('.user_profile_dropdown').classList.remove('show')
     }
     document.querySelector('body').addEventListener('click', () => {
+      document.querySelector('.user_profile_dropdown').classList.remove('show')
+    })
+    document.querySelector('.user_profile_dropdown > a').addEventListener('click', () => {
       document.querySelector('.user_profile_dropdown').classList.remove('show')
     })
   };
@@ -44,12 +64,13 @@ export default function Dashboard() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/tracking" element={<Tracking />} />
-          {/* <Route path="/calculator" element={<Calculator />} /> */}
+          <Route path="/calculator" element={<Calculator />} />
           {/* <Route path="/advisor" element={<Advisor />} /> */}
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
       <footer className="dashboard_footer">
-        <p>Created by <a href="https://github.com/VladRafli" target="_blank" rel="noopener noreferrer">VladRafli</a> - <a href="https://github.com/VladRafli/BMI-Advisor" target="_blank" rel="noopener noreferrer">Repository</a></p>
+        <p>Created by <a href="https://github.com/VladRafli" target="_blank" rel="noopener noreferrer">VladRafli</a> and Team - <a href="https://github.com/VladRafli/BMI-Advisor" target="_blank" rel="noopener noreferrer">Repository</a></p>
       </footer>
     </div>
   );

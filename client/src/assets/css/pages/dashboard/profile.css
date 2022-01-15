@@ -1,0 +1,49 @@
+.profile_component > h1 {
+    @apply mb-10 text-3xl text-center font-bold;
+}
+
+.profile_component > .profile_content {
+    @apply flex flex-col items-center;
+}
+
+.profile_component > .profile_content > .profile_picture {
+    @apply mb-10 flex flex-col items-center;
+}
+
+.profile_component > .profile_content > .profile_picture > div {
+    @apply h-32 w-32 mb-5 flex justify-center items-center bg-gray-300 rounded-full text-3xl;
+}
+
+.profile_component > .profile_content > .profile_picture > label {
+    @apply p-3 bg-gray-300 rounded-lg cursor-pointer transition-colors hover:bg-opacity-50;
+}
+
+.profile_component > .profile_content > .profile_picture > input {
+    @apply hidden;
+}
+
+.profile_component > .profile_content > .profile_detail {
+    @apply w-1/2 flex flex-col items-center;
+}
+
+.profile_component > .profile_content > .profile_detail > div {
+    @apply w-full mb-10 flex justify-between;
+}
+
+.profile_component > .profile_content > .profile_detail > div > button {
+    @apply p-3 bg-gray-300 rounded-lg transition-colors hover:bg-opacity-50;
+}
+
+.profile_component > .profile_content > .profile_detail > form {
+    @apply w-full p-5 grid grid-cols-2 gap-5;
+}
+
+.profile_component > .profile_content > .profile_detail > form > * {
+    @apply p-3;
+}
+
+.profile_component > .profile_content > .profile_detail > form > button {
+    @apply hidden bg-gray-300 rounded-lg transition-colors hover:bg-opacity-50;
+    grid-column-start: 1;
+    grid-column-end: span 2;
+}
