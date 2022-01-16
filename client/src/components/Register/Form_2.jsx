@@ -1,11 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { formState } from "../../pages/Register";
 
-export default function RegisterFormTwo() {
+export default function RegisterFormTwo({errors}) {
   const getFormState = useRecoilValue(formState);
   const setFormState = useSetRecoilState(formState);
-  const navigate = useNavigate();
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -13,12 +11,6 @@ export default function RegisterFormTwo() {
       ...prevState,
       [name]: value,
     }));
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(getFormState);
-    alert("This form is not doing anything, system is not available");
-    navigate("/login");
   };
   return (
     <>
@@ -31,6 +23,7 @@ export default function RegisterFormTwo() {
           placeholder="Email"
           onChange={handleChange}
         />
+        {errors.email !== "" ? <p>{errors.email}</p> : null}
         <input
           value={getFormState.password}
           type="password"
@@ -47,8 +40,9 @@ export default function RegisterFormTwo() {
           placeholder="Re-enter Password"
           onChange={handleChange}
         />
+        {errors.password !== "" ? <p>{errors.password}</p> : null}
       </div>
-      <button type="submit" onClick={handleSubmit}>
+      <button type="submit">
         Register
       </button>
     </>

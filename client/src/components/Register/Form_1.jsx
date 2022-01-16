@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { formState } from "../../pages/Register";
 
-export default function RegisterFormOne() {
+export default function RegisterFormOne({errors}) {
   const getFormState = useRecoilValue(formState);
   const setFormState = useSetRecoilState(formState);
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
@@ -24,6 +24,7 @@ export default function RegisterFormOne() {
           placeholder="First Name"
           onChange={handleChange}
         />
+        {errors.firstName !== "" ? <p>{errors.firstName}</p> : null}
         <input
           value={getFormState.lastName}
           type="text"
@@ -32,11 +33,20 @@ export default function RegisterFormOne() {
           placeholder="Last Name"
           onChange={handleChange}
         />
-        <select name="gender" id="gender" value={getFormState.gender} onChange={handleChange}>
-          <option value="" disabled selected>Choose gender</option>
+        {errors.lastName !== "" ? <p>{errors.lastName}</p> : null}
+        <select
+          name="gender"
+          id="gender"
+          value={getFormState.gender}
+          onChange={handleChange}
+        >
+          <option value="" disabled selected>
+            Choose gender
+          </option>
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
+        {errors.gender !== "" ? <p>{errors.gender}</p> : null}
         <input
           value={getFormState.age}
           type="number"
@@ -45,6 +55,7 @@ export default function RegisterFormOne() {
           placeholder="Age"
           onChange={handleChange}
         />
+        {errors.age !== "" ? <p>{errors.age}</p> : null}
         <input
           value={getFormState.dob}
           type="date"
@@ -53,6 +64,7 @@ export default function RegisterFormOne() {
           placeholder="Date Of Birth"
           onChange={handleChange}
         />
+        {errors.dob !== "" ? <p>{errors.dob}</p> : null}
         <input
           value={getFormState.height}
           type="number"
@@ -63,6 +75,7 @@ export default function RegisterFormOne() {
           placeholder="Height"
           onChange={handleChange}
         />
+        {errors.height !== "" ? <p>{errors.height}</p> : null}
         <input
           value={getFormState.weight}
           type="number"
@@ -73,6 +86,7 @@ export default function RegisterFormOne() {
           placeholder="Weight"
           onChange={handleChange}
         />
+        {errors.weight !== "" ? <p>{errors.weight}</p> : null}
       </div>
       <Link to="/register/user" id="nextTo2">
         Next

@@ -30,6 +30,12 @@
     @apply w-full p-3 my-3 rounded-lg;
 }
 
+.register_form > .form_inputs > p {
+    @apply h-fit w-fit m-0 p-0 absolute text-sm text-red-400;
+    transform: translate(0.75rem, -2rem);
+    user-select: none;
+}
+
 .register_form > a:last-child, .register_form > button {
     @apply mt-auto p-3 text-center transition-colors bg-cyan-300 rounded-lg hover:bg-cyan-200;
 }

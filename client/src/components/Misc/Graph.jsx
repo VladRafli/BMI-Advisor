@@ -1,6 +1,6 @@
 import "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import { atom, useRecoilValue, useSetRecoilState } from "recoil";
+import { atom, useRecoilValue } from "recoil";
 
 export const graphData = atom({
   key: "graphData",
@@ -16,7 +16,6 @@ export const graphData = atom({
 
 export default function Graph() {
   const getGraphData = useRecoilValue(graphData);
-  const setGraphData = useSetRecoilState(graphData);
   return (
     <Line
       data={{
