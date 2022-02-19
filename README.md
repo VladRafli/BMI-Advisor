@@ -2,6 +2,10 @@
 
 This repository contains code for Web Design Lecture Subject Final Project.
 
+**Update**
+
+Latest update is update that I worked myself to learn more about Express-React-Node Stack
+
 # Project Detail
 
 Create a simple web application named "BMI Advisor"
@@ -21,6 +25,11 @@ You are free to adjust/add the requirement as necessary based on your preference
 
 Tools: HTML5, Javascript, React.js
 
+# Progress
+
+- Last update on assignment deadline at last commit on 16 January, all Front-End UI is completed
+- Commit on 19 February, implemented Login system using cookies method by editing Server source code and Client source code. Logout not implemented yet, so testing it need to delete cookies and data in session.json
+
 # Library and Frameworks
 
 - React
@@ -34,7 +43,7 @@ Tools: HTML5, Javascript, React.js
 - @fortawesome/free-regular-svg-icons
 - @fortawesome/free-solid-svg-icons
 - @fortawesome/react-fontawesome
-- gh-pages
+- gh-pages (Not working anymore)
 - Express
 - bcrypt
 - cors

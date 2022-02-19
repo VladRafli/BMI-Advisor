@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 
 export default function Login() {
   let navigate = useNavigate();
   let [state, setState] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
@@ -18,21 +18,33 @@ export default function Login() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // axios
-    //   .post("http://localhost:5000/users/login", {
-    //     username: e.target.username.value,
-    //     password: e.target.password.value
-    //   })
-    //   .then(() => {
-    //     navigate("/", {replace: true})
-    //   })
-    //   .catch((res) => {
-    //     console.log(res)
-    //   })
+    axios
+      .post(
+        "http://localhost:5000/users/login",
+        {
+          username: e.target.username.value,
+          password: e.target.password.value,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res.status);
+        if (res.status === 200) {
+          console.log("Login Success!");
+          console.log(res.data.msg);
+          navigate("/dashboard", { replace: true });
+        } else {
+          console.log(res.data.msg);
+          navigate("/login", { replace: true });
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
     console.log(state);
-    alert("This form is not doing anything, system is not available");
-    navigate("/dashboard");
-  }
+  };
   return (
     <div className="login_page">
       <div className="background_filter">
@@ -41,11 +53,11 @@ export default function Login() {
           <p>Login</p>
           <div className="form_inputs">
             <input
-              value={state.email}
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Email"
+              value={state.username}
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Username"
               onChange={handleChange}
             />
             <input
@@ -57,7 +69,9 @@ export default function Login() {
               onChange={handleChange}
             />
           </div>
-          <p>Don't have an account, <Link to="/register">click here!</Link></p>
+          <p>
+            Don't have an account, <Link to="/register">click here!</Link>
+          </p>
           <button type="submit">Submit</button>
         </form>
       </div>
