@@ -1,26 +1,29 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useSetRecoilState } from 'recoil'
+import { authState } from '../App'
 
 export default function Login() {
-  let navigate = useNavigate();
+  let navigate = useNavigate()
   let [state, setState] = useState({
-    username: "",
-    password: "",
-  });
+    username: '',
+    password: '',
+  })
+  const setAuth = useSetRecoilState(authState)
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setState((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     axios
       .post(
-        "http://localhost:5000/users/login",
+        'http://localhost:5000/users/login',
         {
           username: e.target.username.value,
           password: e.target.password.value,
@@ -30,21 +33,18 @@ export default function Login() {
         }
       )
       .then((res) => {
-        console.log(res.status);
         if (res.status === 200) {
-          console.log("Login Success!");
-          console.log(res.data.msg);
-          navigate("/dashboard", { replace: true });
+          setAuth(true)
+          navigate('/dashboard')
         } else {
-          console.log(res.data.msg);
-          navigate("/login", { replace: true });
+          setAuth(false)
+          navigate('/login')
         }
       })
       .catch((res) => {
-        console.log(res);
-      });
-    console.log(state);
-  };
+        console.log(res)
+      })
+  }
   return (
     <div className="login_page">
       <div className="background_filter">
@@ -76,5 +76,5 @@ export default function Login() {
         </form>
       </div>
     </div>
-  );
+  )
 }

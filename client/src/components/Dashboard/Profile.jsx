@@ -1,34 +1,34 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userState } from "../../pages/Dashboard";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-regular-svg-icons'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { userState } from '../../pages/Dashboard'
 
 export default function Profile() {
-  const getUserState = useRecoilValue(userState);
-  const setUserState = useSetRecoilState(userState);
+  const getUserState = useRecoilValue(userState)
+  const setUserState = useSetRecoilState(userState)
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setUserState((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
   const handleClickOnChangeProfile = () => {
-    document.querySelectorAll("form > input").forEach((e, k, p) => {
-      e.removeAttribute("disabled");
-    });
+    document.querySelectorAll('form > input').forEach((e, k, p) => {
+      e.removeAttribute('disabled')
+    })
     document
-      .querySelector("form > button")
-      .setAttribute("style", "display: block;");
-  };
+      .querySelector('form > button')
+      .setAttribute('style', 'display: block;')
+  }
   const handleClickOnSaveChanges = (e) => {
-    e.preventDefault();
-    document.querySelectorAll("form > input").forEach((e, k, p) => {
-      e.setAttribute("disabled", "");
-    });
-    document.querySelector("form > button").removeAttribute("style");
-  };
+    e.preventDefault()
+    document.querySelectorAll('form > input').forEach((e, k, p) => {
+      e.setAttribute('disabled', '')
+    })
+    document.querySelector('form > button').removeAttribute('style')
+  }
   return (
     <div className="profile_component">
       <h1>Profile</h1>
@@ -112,5 +112,5 @@ export default function Profile() {
         </div>
       </div>
     </div>
-  );
+  )
 }

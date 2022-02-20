@@ -1,41 +1,40 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 export default function Calculator() {
   let [state, setState] = useState({
     height: 0,
     weight: 0,
-  });
+  })
   const handleCalculateChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setState((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
   const handleCalculateSubmit = (e) => {
-    let height = parseInt(e.target.height.value);
-    let weight = parseInt(e.target.weight.value);
-    e.preventDefault();
+    let height = parseInt(e.target.height.value)
+    let weight = parseInt(e.target.weight.value)
+    e.preventDefault()
     if (height !== 0 && weight !== 0) {
-      let bmi = weight / Math.pow(height / 100, 2);
+      let bmi = weight / Math.pow(height / 100, 2)
       document
-        .querySelector(".bmi_result")
-        .setAttribute("style", "display: flex");
+        .querySelector('.bmi_result')
+        .setAttribute('style', 'display: flex')
       if (bmi < 18.5)
-        document.querySelector(".bmi_result > h1").innerHTML = "Underweight";
+        document.querySelector('.bmi_result > h1').innerHTML = 'Underweight'
       else if (bmi >= 18.5 && bmi <= 24.9)
-        document.querySelector(".bmi_result > h1").innerHTML = "Normal";
+        document.querySelector('.bmi_result > h1').innerHTML = 'Normal'
       else if (bmi >= 25 && bmi <= 29.9)
-        document.querySelector(".bmi_result > h1").innerHTML = "Overweight";
+        document.querySelector('.bmi_result > h1').innerHTML = 'Overweight'
       else if (bmi >= 30 && bmi <= 34.9)
-        document.querySelector(".bmi_result > h1").innerHTML = "Obese Class I";
+        document.querySelector('.bmi_result > h1').innerHTML = 'Obese Class I'
       else if (bmi >= 35 && bmi <= 39.9)
-        document.querySelector(".bmi_result > h1").innerHTML = "Obese Class II";
+        document.querySelector('.bmi_result > h1').innerHTML = 'Obese Class II'
       else if (bmi >= 40)
-        document.querySelector(".bmi_result > h1").innerHTML =
-          "Obese Class III";
+        document.querySelector('.bmi_result > h1').innerHTML = 'Obese Class III'
     }
-  };
+  }
   return (
     <div className="calculator_component">
       <h1>BMI Calculator</h1>
@@ -51,7 +50,7 @@ export default function Calculator() {
             <tbody>
               <tr>
                 <td>Underweight</td>
-                <td>{"<"} 18.5</td>
+                <td>{'<'} 18.5</td>
               </tr>
               <tr>
                 <td>Normal</td>
@@ -71,7 +70,7 @@ export default function Calculator() {
               </tr>
               <tr>
                 <td>Obese Class III</td>
-                <td>{">"} 40</td>
+                <td>{'>'} 40</td>
               </tr>
             </tbody>
           </table>
@@ -113,5 +112,5 @@ export default function Calculator() {
         </div>
       </div>
     </div>
-  );
+  )
 }

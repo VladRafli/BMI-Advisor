@@ -188,7 +188,7 @@ app.post('/users/login', (req, res) => {
                             .cookie('sessionId', sessionId, {
                                 httpOnly: true
                             })
-                            .cookie('userId', user.userId,  {
+                            .cookie('userId', user.userId, {
                                 httpOnly: true
                             })
                             .send({
@@ -259,6 +259,8 @@ app.get('/users/isloggedin', (req, res) => {
 })
 
 app.get('/users/logout', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
+    res.setHeader('Pragma', 'no-cache')
     if (req.cookies.userId !== undefined) {
         SessionList.deleteSession(req.cookies.userId)
         res.clearCookie('userId')

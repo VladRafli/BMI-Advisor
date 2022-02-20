@@ -51,7 +51,7 @@
 }
 
 .dashboard_navbar > .profile_button > .user_profile > .user_profile_dropdown > * {
-    @apply p-2 rounded-xl transition-colors hover:bg-gray-300;
+    @apply p-2 text-left rounded-xl transition-colors hover:bg-gray-300;
 }
 
 .dashboard_navbar > .profile_button > .user_profile > .user_avatar {

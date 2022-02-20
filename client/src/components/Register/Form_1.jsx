@@ -1,18 +1,18 @@
-import { Link } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { formState } from "../../pages/Register";
+import { Link } from 'react-router-dom'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { formState } from '../../pages/Register'
 
-export default function RegisterFormOne({errors}) {
-  const getFormState = useRecoilValue(formState);
-  const setFormState = useSetRecoilState(formState);
+export default function RegisterFormOne({ errors }) {
+  const getFormState = useRecoilValue(formState)
+  const setFormState = useSetRecoilState(formState)
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
   return (
     <>
       <div className="form_inputs">
@@ -24,7 +24,7 @@ export default function RegisterFormOne({errors}) {
           placeholder="First Name"
           onChange={handleChange}
         />
-        {errors.firstName !== "" ? <p>{errors.firstName}</p> : null}
+        {errors.firstName !== '' ? <p>{errors.firstName}</p> : null}
         <input
           value={getFormState.lastName}
           type="text"
@@ -33,7 +33,7 @@ export default function RegisterFormOne({errors}) {
           placeholder="Last Name"
           onChange={handleChange}
         />
-        {errors.lastName !== "" ? <p>{errors.lastName}</p> : null}
+        {errors.lastName !== '' ? <p>{errors.lastName}</p> : null}
         <select
           name="gender"
           id="gender"
@@ -46,7 +46,7 @@ export default function RegisterFormOne({errors}) {
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
-        {errors.gender !== "" ? <p>{errors.gender}</p> : null}
+        {errors.gender !== '' ? <p>{errors.gender}</p> : null}
         <input
           value={getFormState.age}
           type="number"
@@ -55,7 +55,7 @@ export default function RegisterFormOne({errors}) {
           placeholder="Age"
           onChange={handleChange}
         />
-        {errors.age !== "" ? <p>{errors.age}</p> : null}
+        {errors.age !== '' ? <p>{errors.age}</p> : null}
         <input
           value={getFormState.dob}
           type="date"
@@ -64,7 +64,7 @@ export default function RegisterFormOne({errors}) {
           placeholder="Date Of Birth"
           onChange={handleChange}
         />
-        {errors.dob !== "" ? <p>{errors.dob}</p> : null}
+        {errors.dob !== '' ? <p>{errors.dob}</p> : null}
         <input
           value={getFormState.height}
           type="number"
@@ -75,7 +75,7 @@ export default function RegisterFormOne({errors}) {
           placeholder="Height"
           onChange={handleChange}
         />
-        {errors.height !== "" ? <p>{errors.height}</p> : null}
+        {errors.height !== '' ? <p>{errors.height}</p> : null}
         <input
           value={getFormState.weight}
           type="number"
@@ -86,11 +86,11 @@ export default function RegisterFormOne({errors}) {
           placeholder="Weight"
           onChange={handleChange}
         />
-        {errors.weight !== "" ? <p>{errors.weight}</p> : null}
+        {errors.weight !== '' ? <p>{errors.weight}</p> : null}
       </div>
       <Link to="/register/user" id="nextTo2">
         Next
       </Link>
     </>
-  );
+  )
 }

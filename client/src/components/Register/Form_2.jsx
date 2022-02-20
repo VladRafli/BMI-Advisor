@@ -1,17 +1,17 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { formState } from "../../pages/Register";
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { formState } from '../../pages/Register'
 
-export default function RegisterFormTwo({errors}) {
-  const getFormState = useRecoilValue(formState);
-  const setFormState = useSetRecoilState(formState);
+export default function RegisterFormTwo({ errors }) {
+  const getFormState = useRecoilValue(formState)
+  const setFormState = useSetRecoilState(formState)
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
   return (
     <>
       <div className="form_inputs">
@@ -23,7 +23,7 @@ export default function RegisterFormTwo({errors}) {
           placeholder="Email"
           onChange={handleChange}
         />
-        {errors.email !== "" ? <p>{errors.email}</p> : null}
+        {errors.email !== '' ? <p>{errors.email}</p> : null}
         <input
           value={getFormState.password}
           type="password"
@@ -40,11 +40,9 @@ export default function RegisterFormTwo({errors}) {
           placeholder="Re-enter Password"
           onChange={handleChange}
         />
-        {errors.password !== "" ? <p>{errors.password}</p> : null}
+        {errors.password !== '' ? <p>{errors.password}</p> : null}
       </div>
-      <button type="submit">
-        Register
-      </button>
+      <button type="submit">Register</button>
     </>
-  );
+  )
 }

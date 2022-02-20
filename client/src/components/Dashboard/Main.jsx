@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import Graph from "../Misc/Graph";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import Graph from '../Misc/Graph'
 
 export default function Main() {
   return (
@@ -68,5 +68,5 @@ export default function Main() {
         </div>
       </div>
     </>
-  );
+  )
 }
