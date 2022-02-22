@@ -29,6 +29,8 @@ Tools: HTML5, Javascript, React.js
 
 - Last update on assignment deadline at last commit on 16 January, all Front-End UI is completed
 - Commit on 19 February, implemented Login system using cookies method by editing Server source code and Client source code. Logout not implemented yet, so testing it need to delete cookies and data in session.json
+- Commit on 20 February, implemented Logout system and fix behaviour for Login system
+- Commit on 22 February, implemented Register system, another fix behaviour for Login system, and change some client-side rendered ui
 
 # Library and Frameworks
 
