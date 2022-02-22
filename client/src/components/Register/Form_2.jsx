@@ -17,13 +17,13 @@ export default function RegisterFormTwo({ errors }) {
       <div className="form_inputs">
         <input
           value={getFormState.email}
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Email"
+          type="test"
+          name="username"
+          id="username"
+          placeholder="Username"
           onChange={handleChange}
         />
-        {errors.email !== '' ? <p>{errors.email}</p> : null}
+        {errors.username !== '' ? <p>{errors.username}</p> : null}
         <input
           value={getFormState.password}
           type="password"

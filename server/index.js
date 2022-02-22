@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const User = require('./model/User')
 const SessionList = require('./model/Session')
 const cookieParser = require('cookie-parser')
+const _ = require('lodash')
 require('dotenv').config()
 
 // ==========
@@ -27,10 +28,12 @@ const app = express()
  * @param {NextFunction} next 
  */
 function isLoggedIn(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
-    res.setHeader('Access-Control-Allow-Credentials', true)
-    if (req.cookies.sessionId === undefined) {
+    if (!_.has(req.cookies, 'sessionId')) {
         res.status(403).send('<h1>Forbidden</h1>')
+        console.log('No sessionId cookie send')
+    } else if (!SessionList.getUserIdBySessionId(req.cookies.sessionId)) {
+        res.status(403).send('<h1>Forbidden</h1>')
+        console.log('Session not available on database')
     } else {
         next()
     }
@@ -93,34 +96,35 @@ app.use(isAllowedRequestMethods)
 // API Routes
 // ================
 app.get('/', (req, res) => {
-    if (req.cookies.userId === '1')
+    if (SessionList.getUserIdBySessionId(req.cookies.sessionId) === 1)
         res.send('This is BMI Advisor API Endpoint, API is under development, currently logged in as Admin! Proceed with caution.')
-    else if (req.cookies.userId !== undefined)
-        res.send(`This is BMI Advisor API Endpoint, API is under development, currently logged in as user id: ${req.cookies.userId}`)
+    else if (SessionList.getUserIdBySessionId(req.cookies.sessionId) !== 1)
+        res.send(`This is BMI Advisor API Endpoint, API is under development, currently logged in as user id: ${SessionList.getUserIdBySessionId(req.cookies.sessionId)}`)
     else
         res.send(`This is BMI Advisor API Endpoint, API is under development, currently not logged in`)
 });
 
 app.get('/users', isLoggedIn, (req, res) => {
     // If Admin
-    if (req.cookies.userId === 1) {
-        if (req.query.id == null) {
+    if (SessionList.getUserIdBySessionId(req.cookies.sessionId) === 1) {
+        if (!_.has(req.query, 'id')) {
             try {
                 res.status(200).send(User.getUser())
                 return
             } catch (err) {
                 console.error(err)
-                res.status(500).send({
+                res.status(200).send({
                     err: err
                 })
                 return
             }
-        } else if (req.query.id != null && Number.isInteger(parseInt(req.query.id))) {
+        } else if (_.has(req.query, 'id') && Number.isInteger(parseInt(req.query?.id))) {
             try {
                 for (let user of User.getUser()) {
                     if (user.userId === parseInt(req.query.id)) {
                         res.status(200).send({
                             userId: user.userId,
+                            username: user.username,
                             userInformation: user.userInformation,
                             status: user.status,
                             advice: user.advice
@@ -140,35 +144,40 @@ app.get('/users', isLoggedIn, (req, res) => {
                 return
             }
         } else {
-            res.status(500).send({
+            res.status(200).send({
                 msg: 'Request is invalid'
             })
             return
         }
-    }
-    // If not Admin
-    else if (req.cookies.userId !== undefined) {
-        try {
-            for (let user of User.getUser()) {
-                if (user.userId === parseInt(req.cookies.userId)) {
+    } else {
+        if (_.has(req.cookies, 'id')) {
+            try {
+                for (let user of User.getUser()) {
+                    if (user.userId === parseInt(req.query.id)) {
+                        res.status(200).send({
+                            userId: user.userId,
+                            username: user.username,
+                            userInformation: user.userInformation,
+                            status: user.status,
+                            advice: user.advice
+                        })
+                        return
+                    }
                     res.status(200).send({
-                        userId: user.userId,
-                        userInformation: user.userInformation,
-                        status: user.status,
-                        advice: user.advice
-                    })
-                    return
-                } else {
-                    res.status(500).send({
-                        msg: 'Data not found for userId=' + parseInt(req.cookies.userId)
+                        msg: 'Data not found'
                     })
                     return
                 }
+            } catch (err) {
+                console.error(err)
+                res.status(500).send({
+                    err: err
+                })
+                return
             }
-        } catch (err) {
-            console.error(err)
-            res.status(500).send({
-                err: err
+        } else {
+            res.status(200).send({
+                msg: 'Request is invalid'
             })
             return
         }
@@ -178,7 +187,7 @@ app.get('/users', isLoggedIn, (req, res) => {
 app.post('/users/login', (req, res) => {
     const { username, password } = req.body
     try {
-        if (req.cookies.userId === undefined) {
+        if (!SessionList.checkSessionId(req.cookies.sessionId)) {
             for (let user of User.getUser()) {
                 if (user.username === username && bcrypt.compareSync(password, user.password)) {
                     let sessionId = SessionList.setSession(user.userId)
@@ -188,28 +197,30 @@ app.post('/users/login', (req, res) => {
                             .cookie('sessionId', sessionId, {
                                 httpOnly: true
                             })
-                            .cookie('userId', user.userId, {
-                                httpOnly: true
-                            })
                             .send({
+                                userId: user.userId,
+                                auth: true,
                                 msg: 'User successfully logged in!'
                             })
                         return
                     } else {
                         console.log('Login error on set Session ID, already saved on database')
-                        res.status(500).send({
+                        res.status(200).send({
+                            auth: false,
                             msg: 'Login error on set Session ID, already saved on database'
                         })
                         return
                     }
                 }
-                res.status(500).send({
+                res.status(200).send({
+                    auth: false,
                     msg: 'Wrong username or password!'
                 })
                 return
             }
         } else {
             res.status(200).send({
+                auth: true,
                 msg: 'User already logged in!'
             })
             return
@@ -247,13 +258,16 @@ app.post('/users/register', (req, res) => {
 app.get('/users/isloggedin', (req, res) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
     res.setHeader('Pragma', 'no-cache')
-    if (req.cookies.userId === undefined) {
+    if (SessionList.checkSessionId(req.cookies.sessionId)) {
+        res.status(200).send({
+            auth: true,
+            userId: SessionList.getUserIdBySessionId(req.cookies.sessionId)
+        })
+    } else if (!SessionList.checkSessionId(req.cookies.sessionId)) {
         res.status(200).send(false)
-    } else if (typeof parseInt(req.cookies.userId) === 'number') {
-        res.status(200).send(true)
     } else {
         res.status(500).send({
-            msg: "Something wrong with the cookies"
+            msg: "Something wrong with the session"
         })
     }
 })
@@ -261,9 +275,8 @@ app.get('/users/isloggedin', (req, res) => {
 app.get('/users/logout', (req, res) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
     res.setHeader('Pragma', 'no-cache')
-    if (req.cookies.userId !== undefined) {
-        SessionList.deleteSession(req.cookies.userId)
-        res.clearCookie('userId')
+    if (SessionList.checkSessionId(req.cookies.sessionId)) {
+        SessionList.deleteSession(req.cookies.sessionId)
         res.clearCookie('sessionId')
         res.status(200).send({
             msg: 'User logged out!'

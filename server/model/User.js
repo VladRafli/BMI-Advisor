@@ -39,7 +39,8 @@ module.exports = {
      */
     addUser: (user) => {
         try {
-            let users = this.getUser()
+            const data = fs.readFileSync(`${dbPath}/users.json`)
+            const users = JSON.parse(data)
             users.push(user)
             fs.writeFileSync(`${dbPath}/users.json`, JSON.stringify(users))
         } catch (err) {

@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
-import { atom, useSetRecoilState } from 'recoil'
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
@@ -7,17 +8,18 @@ import Main from '../components/Dashboard/Main'
 import Calculator from '../components/Dashboard/Calculator'
 import Tracking from '../components/Dashboard/Tracking'
 import Profile from '../components/Dashboard/Profile'
-import { authState } from '../App'
+import { authState, userId } from '../App'
 
 export const userState = atom({
   key: 'userState',
   default: {
-    email: 'user@mail.com',
+    userId: 0,
+    username: '',
     name: {
-      firstName: 'user',
-      lastName: 'testing',
+      firstName: '',
+      lastName: '',
     },
-    dob: '1999-12-30',
+    dob: '',
     height: 0,
     weight: 0,
   },
@@ -25,7 +27,11 @@ export const userState = atom({
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const getUserId = useRecoilValue(userId)
+  const auth = useRecoilValue(authState)
   const setAuth = useSetRecoilState(authState)
+  const user = useRecoilValue(userState)
+  const setUserState = useSetRecoilState(userState)
   const handleProfileClick = (e) => {
     e.stopPropagation()
     if (
@@ -54,6 +60,28 @@ export default function Dashboard() {
     setAuth(false)
     navigate('/login')
   }
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/users', {
+        params: {
+          id: getUserId,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        setUserState({
+          userId: userId,
+          username: res.data.username,
+          name: {
+            firstName: res.data.userInformation.name.firstName,
+            lastName: res.data.userInformation.name.lastName,
+          },
+          dob: res.data.userInformation.dob,
+          height: parseInt(res.data.userInformation.height),
+          weight: parseInt(res.data.userInformation.weight),
+        })
+      })
+  }, [auth, getUserId, setUserState])
   return (
     <div className="dashboard_page">
       <header className="dashboard_navbar">
@@ -79,7 +107,7 @@ export default function Dashboard() {
               <Link to="/dashboard/profile">Profile</Link>
               <button onClick={handleLogout}>Logout</button>
             </div>
-            <p>Username</p>
+            <p>{user.name.firstName}</p>
           </div>
         </div>
       </header>

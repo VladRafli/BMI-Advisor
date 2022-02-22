@@ -1,8 +1,11 @@
+import { useRecoilState } from 'recoil'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import Graph from '../Misc/Graph'
+import { userState } from '../../pages/Dashboard'
 
 export default function Main() {
+  const user = useRecoilState(userState)
   return (
     <>
       <h1>Welcome back, user!</h1>
@@ -12,7 +15,7 @@ export default function Main() {
           <h1>Height</h1>
           <div>
             <div>
-              <p>175</p>
+              <p>{user[0].height}</p>
             </div>
             <div>
               <FontAwesomeIcon icon={faCaretUp} />
@@ -26,7 +29,7 @@ export default function Main() {
           <h1>Weight</h1>
           <div>
             <div>
-              <p>50</p>
+              <p>{user[0].weight}</p>
             </div>
             <div>
               <FontAwesomeIcon icon={faCaretDown} />

@@ -51,12 +51,12 @@ export default function Profile() {
             <button>Change password</button>
           </div>
           <form method="post">
-            <label htmlFor="email">Email: </label>
+            <label htmlFor="email">Username: </label>
             <input
-              type="email"
-              name="email"
-              id="email"
-              value={getUserState.email}
+              type="text"
+              name="username"
+              id="username"
+              value={getUserState.username}
               onChange={handleChange}
               disabled
             />

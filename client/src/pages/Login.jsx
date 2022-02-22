@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useSetRecoilState } from 'recoil'
-import { authState } from '../App'
+import { authState, userId } from '../App'
 
 export default function Login() {
   let navigate = useNavigate()
@@ -11,6 +11,7 @@ export default function Login() {
     password: '',
   })
   const setAuth = useSetRecoilState(authState)
+  const setUserId = useSetRecoilState(userId)
   // Reference: https://stackoverflow.com/questions/54150783/react-hooks-usestate-with-object
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -33,8 +34,10 @@ export default function Login() {
         }
       )
       .then((res) => {
-        if (res.status === 200) {
+        if (res.data.auth) {
+          console.log(res.data)
           setAuth(true)
+          setUserId(res.data.userId)
           navigate('/dashboard')
         } else {
           setAuth(false)

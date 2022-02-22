@@ -12,10 +12,16 @@ export const authState = atom({
   default: false,
 })
 
+export const userId = atom({
+  key: 'userId',
+  default: 0
+})
+
 export default function App() {
   // Reference: https://stackoverflow.com/questions/68647891/check-if-logged-in-react-router-redirect
   const auth = useRecoilValue(authState)
   const setAuth = useSetRecoilState(authState)
+  const setUserId = useSetRecoilState(userId)
   useEffect(() => {
     const requireAuth = async () => {
       return await axios
@@ -30,9 +36,10 @@ export default function App() {
         })
     }
     requireAuth().then((res) => {
-      setAuth(res)
+      setAuth(res.auth)
+      setUserId(res.userId)
     })
-  }, [setAuth])
+  }, [setAuth, setUserId])
   return (
     <BrowserRouter>
       <Routes>
@@ -64,10 +71,6 @@ export default function App() {
             auth ? <Navigate to="/dashboard" replace={true} /> : <Register />
           }
         />
-        {/* <Route path="/" element={<Navigate to="/dashboard" replace={true} />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register/*" element={<Register />} /> */}
       </Routes>
     </BrowserRouter>
   )

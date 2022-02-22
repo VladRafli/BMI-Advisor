@@ -1,186 +1,197 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { atom, useRecoilValue } from "recoil";
-import FormOne from "../components/Register/Form_1";
-import FormTwo from "../components/Register/Form_2";
-import BackButton from "../components/Register/Back_Button";
-import { useState } from "react";
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import { atom, useRecoilValue } from 'recoil'
+import FormOne from '../components/Register/Form_1'
+import FormTwo from '../components/Register/Form_2'
+import BackButton from '../components/Register/Back_Button'
+import { useState } from 'react'
+import axios from 'axios'
 
 export const formState = atom({
-  key: "formState",
+  key: 'formState',
   default: {
-    email: "",
-    password: "",
-    password_check: "",
-    firstName: "",
-    lastName: "",
-    gender: "",
-    age: "",
-    dob: "",
-    height: "",
-    weight: "",
+    username: '',
+    password: '',
+    password_check: '',
+    firstName: '',
+    lastName: '',
+    gender: '',
+    age: '',
+    dob: '',
+    height: '',
+    weight: '',
   },
-});
+})
 
 export default function Register() {
-  const getFormState = useRecoilValue(formState);
-  const navigate = useNavigate();
+  const getFormState = useRecoilValue(formState)
+  const navigate = useNavigate()
   const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-    password_check: "",
-    firstName: "",
-    lastName: "",
-    gender: "",
-    age: "",
-    dob: "",
-    height: "",
-    weight: "",
-  });
+    username: '',
+    password: '',
+    password_check: '',
+    firstName: '',
+    lastName: '',
+    gender: '',
+    age: '',
+    dob: '',
+    height: '',
+    weight: '',
+  })
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (getFormState.age === "")
+    e.preventDefault()
+    if (getFormState.age === '')
       setErrors((prevState) => ({
         ...prevState,
-        age: "Please input your age",
-      }));
+        age: 'Please input your age',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        age: "",
-      }));
-    if (getFormState.dob === "")
+        age: '',
+      }))
+    if (getFormState.dob === '')
       setErrors((prevState) => ({
         ...prevState,
-        dob: "Please input your date of birth",
-      }));
+        dob: 'Please input your date of birth',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        dob: "",
-      }));
-    if (getFormState.email === "")
+        dob: '',
+      }))
+    if (getFormState.email === '')
       setErrors((prevState) => ({
         ...prevState,
-        email: "Please input your email",
-      }));
+        email: 'Please input your email',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        email: "",
-      }));
-    if (getFormState.firstName === "")
+        email: '',
+      }))
+    if (getFormState.firstName === '')
       setErrors((prevState) => ({
         ...prevState,
-        firstName: "Please input your first name",
-      }));
+        firstName: 'Please input your first name',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        firstName: "",
-      }));
-    if (getFormState.gender === "")
+        firstName: '',
+      }))
+    if (getFormState.gender === '')
       setErrors((prevState) => ({
         ...prevState,
-        gender: "Please input your gender",
-      }));
+        gender: 'Please input your gender',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        gender: "",
-      }));
-    if (getFormState.height === "")
+        gender: '',
+      }))
+    if (getFormState.height === '')
       setErrors((prevState) => ({
         ...prevState,
-        height: "Please input your height",
-      }));
+        height: 'Please input your height',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        height: "",
-      }));
-    if (getFormState.lastName === "")
+        height: '',
+      }))
+    if (getFormState.lastName === '')
       setErrors((prevState) => ({
         ...prevState,
-        lastName: "Please input your last name",
-      }));
+        lastName: 'Please input your last name',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        lastName: "",
-      }));
-    if (getFormState.password === "")
+        lastName: '',
+      }))
+    if (getFormState.password === '')
       setErrors((prevState) => ({
         ...prevState,
-        password: "Please input your password",
-      }));
+        password: 'Please input your password',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        password: "Please input your password",
-      }));
-    if (getFormState.password_check === "")
-      if (errors.password === "")
+        password: 'Please input your password',
+      }))
+    if (getFormState.password_check === '')
+      if (errors.password === '')
         setErrors((prevState) => ({
           ...prevState,
-          password: "Please input your password again",
-        }));
+          password: 'Please input your password again',
+        }))
       else
         setErrors((prevState) => ({
           ...prevState,
-          password: "Please input your password again",
-        }));
-    if (getFormState.weight === "")
+          password: 'Please input your password again',
+        }))
+    if (getFormState.weight === '')
       setErrors((prevState) => ({
         ...prevState,
-        weight: "Please input your weight",
-      }));
+        weight: 'Please input your weight',
+      }))
     else
       setErrors((prevState) => ({
         ...prevState,
-        weight: "Please input your weight",
-      }));
+        weight: 'Please input your weight',
+      }))
 
     // Validate inputs
-    if (getFormState.email !== "")
-      if (
-        !getFormState.email.endsWith(".com") ||
-        !getFormState.email.endsWith(".id")
-      ) {
-        if (errors.email === "")
-          setErrors((prevState) => ({
-            ...prevState,
-            email: 'Email must end with ".com" or ".id"',
-          }));
-      } else
-        setErrors((prevState) => ({
-          ...prevState,
-          email: "",
-        }));
+    if (getFormState.username === '')
+      setErrors((prevState) => ({
+        ...prevState,
+        username: 'Please input your username',
+      }))
+    else
+      setErrors((prevState) => ({
+        ...prevState,
+        username: '',
+      }))
 
     if (getFormState.password !== getFormState.password_check) {
-      if (errors.password === "")
+      if (errors.password === '')
         setErrors((prevState) => ({
           ...prevState,
-          password: "Password does not match",
-        }));
+          password: 'Password does not match',
+        }))
     } else
       setErrors((prevState) => ({
         ...prevState,
-        password: "",
-      }));
-
-    console.log(errors);
-    console.log(getFormState);
-    if (
-      Object.keys(errors).forEach((key) => {
-        if (errors[key] !== "") return false;
-        return true;
-      })
-    ) {
-      alert("This form is not doing anything, system is not available");
-      navigate("/login");
+        password: '',
+      }))
+    for (let key in errors) {
+      if (errors[key] === '') delete errors[key]
     }
-  };
+    if (Object.entries(errors).length === 0) {
+      axios
+        .post('http://localhost:5000/users/register', {
+          username: getFormState.email,
+          password: getFormState.password,
+          userInformation: {
+            name: {
+              firstName: getFormState.firstName,
+              lastName: getFormState.lastName,
+            },
+            dob: getFormState.dob,
+            height: getFormState.height,
+            weight: getFormState.weight,
+          },
+        })
+        .then(() => {
+          alert('User successfully created!')
+          navigate('/login')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+    }
+  }
   return (
     <div className="register_page">
       <div className="background_filter">
@@ -198,5 +209,5 @@ export default function Register() {
         </form>
       </div>
     </div>
-  );
+  )
 }
